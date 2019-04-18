@@ -14,7 +14,7 @@ hitPoints(100).
 
 +!fight : role(X)<- .print("I'll focus the enemy ", X);selectNextEnemy(X);.
 
--!fight <- .print("focus champion or turret?").
+//-!fight <- .
 
 +!receiveDamage : damage(X,Z) & hitPoints(Y) & team(T)<- 
 										.print("Ouch, that hurt!");	
