@@ -4,7 +4,7 @@ public class Minion{
 
 	private int attackDamage, minionId;
 
-	private Attack currentAttack;
+	private Attack currentAttack,attackFromChampion,attackFromTurret;
 	
 	private Role role;
 
@@ -14,6 +14,30 @@ public class Minion{
 		this.attackDamage = attackDamage;
 		this.minionId = minionId;
 		this.role = role;
+	}
+
+
+
+	public Attack getAttackFromChampion() {
+		return attackFromChampion;
+	}
+
+
+
+	public void setAttackFromChampion(Attack attackFromChampion) {
+		this.attackFromChampion = attackFromChampion;
+	}
+
+
+
+	public Attack getAttackFromTurret() {
+		return attackFromTurret;
+	}
+
+
+
+	public void setAttackFromTurret(Attack attackFromTurret) {
+		this.attackFromTurret = attackFromTurret;
 	}
 
 

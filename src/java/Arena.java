@@ -4,6 +4,7 @@
 import jason.asSyntax.*;
 import jason.environment.*;
 import model.Attack;
+import model.Champion;
 import model.Minion;
 import model.Role;
 import model.Team;
@@ -29,6 +30,10 @@ public class Arena extends Environment {
 	private static final int numberOfMeleeMinions = 2;
 	private static final int numberOfMinions = 6;
 	private Logger log = Logger.getLogger("mobasimulator." + Arena.class.getName());
+	private Champion bluTeamChampion;
+	private Champion redTeamChampion;
+	private final static String selectTarget = "selectTarget";
+	private final static String receiveDamageFromChampion = "damageFromEnemyChampion";
 
 	/** Called before the MAS execution with the args informed in .mas2j */
 	@Override
@@ -39,6 +44,7 @@ public class Arena extends Environment {
 	@Override
 	/* agName nome dell'agente, action l'azione */
 	public boolean executeAction(String agName, Structure action) {
+		log.info(agName+" "+action.getFunctor());
 		boolean execute = false;
 		if (action.equals(prepareArena)) {
 			// log.info("create arena");
@@ -80,7 +86,7 @@ public class Arena extends Environment {
 				execute = true;
 
 			}
-			/* No element in current turn team, other team won! */
+			/* No element in current turn team, other team turn! */
 			else {
 				log.info("no element in current team");
 				bound = otherMinions.size();
@@ -203,6 +209,29 @@ public class Arena extends Environment {
 			this.addNewMinions(number);
 			execute = true;
 		}
+		if(action.getFunctor().contentEquals(selectTarget)) {
+			log.info("im here");
+			Team championTeam = Team.valueOf(action.getTerm(0).toString());
+			Team otherTeam = Team.getOtherTeam(championTeam);
+			this.updatePerceptsForTeamsElements(championTeam, otherTeam);
+			
+			List<Minion> minions = this.teams.get(otherTeam);
+			int bound = minions.size();
+			if(bound > 0) {
+				int index = new Random().nextInt(bound);
+				Minion minionReceivingDamage = minions.get(index);
+				int attackDamage = this.bluTeamChampion.getAttackDamage();
+				addPercept(otherTeam.toString() + minionReceivingDamage.toString(),
+						Literal.parseLiteral("damage(" + Integer.toString(attackDamage) + "," + agName + ")"));
+				minionReceivingDamage.setCurrentAttack(new Attack(attackDamage, 0, agName));
+				execute = true;
+			}
+			else {
+				return false;
+				/*hit champion or turret*/
+			}
+			
+		}
 		return execute;
 	}
 
@@ -222,6 +251,8 @@ public class Arena extends Environment {
 			}
 
 			removePercept(startingTeam.toString() + minion.toString(), Literal.parseLiteral("spawn"));
+			removePercept(startingTeam.toString() + minion.toString(),
+					Literal.parseLiteral(receiveDamageFromChampion));
 			boolean removeAttack = removePercept(startingTeam.toString() + minion.toString(),
 					Literal.parseLiteral("attack"));
 			if (removeAttack)
@@ -246,6 +277,8 @@ public class Arena extends Environment {
 			}
 
 			removePercept(otherTeam.toString() + otherMinion.toString(), Literal.parseLiteral("spawn"));
+			removePercept(otherTeam.toString() + otherMinion.toString(),
+					Literal.parseLiteral(receiveDamageFromChampion));
 			boolean removeAttack = removePercept(otherTeam.toString() + otherMinion.toString(),
 					Literal.parseLiteral("attack"));
 			if (removeAttack)
@@ -306,9 +339,15 @@ public class Arena extends Environment {
 				elements.add(minion);
 
 			}
+			this.bluTeamChampion = new Champion(40,0,"Garen");
+			addPercept(t.toString() + this.bluTeamChampion.toString(), Literal.parseLiteral("team(" + t.toString() + ")"));
+			this.redTeamChampion = new Champion(40,0,"Riven");
+			addPercept(t.toString() + this.redTeamChampion.toString(), Literal.parseLiteral("team(" + t.toString() + ")"));
+
 			teams.put(t, elements);
 
 		}
+		
 	}
 
 	/** Called before the end of MAS execution */

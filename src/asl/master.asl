@@ -13,7 +13,6 @@ minionId(6).
 /* Initial goals */
 !start.
 !prepareArena.
-//!spawn.
 
 
 

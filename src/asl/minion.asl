@@ -7,28 +7,42 @@ hitPoints(100).
 
 /*when I receive "spawn" percept, I execute plan !***    */
 +spawn <- .print("I'm going forward").
+
 +damage(X,Y) : true <- .print("receive damage ",X," from ",Y);!receiveDamage.
 
-+attackAgain : true <- .print("attack!");!fight.
+
++damageFromEnemyChampion(X,Y): true <- .print("receive damage ",X," from ",Y);!receiveDamageFromChampion.
++attackTurretOrChampion : true <- .print("attack!");!fight.
 +attack :true<- .print("attack!");!fight.
 
 +!fight : role(X)<- .print("I'll focus the enemy ", X);selectNextEnemy(X);.
 
-//-!fight <- .
-
+-!fight : team(Y) <- .print("ciao").
++!receiveDamageFromChampion : damage(X,Z) & hitPoints(Y) & team(T)<- 
+										.print("Ouch, that hurt!");	
+										?amIAlive;		
+										-+hitPoints(Y - X);
+										swapTurn(T).
 +!receiveDamage : damage(X,Z) & hitPoints(Y) & team(T)<- 
 										.print("Ouch, that hurt!");	
 										?amIAlive;		
 										-+hitPoints(Y - X);
-										//.abolish(damage(X,Z));
-										.send(gameMaster,achieve,swapTurn(T)).
+										//dopo che il minion ha ricevuto il danno,
+																	//tocca al campione nemico di attaccare
+										if(T == redTeam){
+											.send(blueTeamGaren,achieve,attack(T));
+										}else{
+											.send(redTeamRiven,achieve,attack(T));
+										}.
+										
+										
+		
 										
 										
 										
 
 
 
-//-?amIAlive : self(X) & team(Y)  <- .print("I WAS KILLED BY ",N); updateKill(X,Y);.print("I am killing myself ",X);.kill_agent(X);.
 										
 -?amIAlive :self(X) & team(Y) <- .print("I WAS KILLED");updateKill(X,Y);.print("I am killing myself ",X);
 								 .send(gameMaster,achieve,swapTurn(Y));.kill_agent(X);.										
