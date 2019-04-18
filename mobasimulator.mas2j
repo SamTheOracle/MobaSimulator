@@ -1,0 +1,17 @@
+MAS mobasimulator {
+
+	infrastructure: Centralised
+
+	environment: Arena
+
+	agents:
+		turret;
+		blueTeamGaren champion;
+		gameMaster master;
+		blueTeamMinion minion #6;
+		redTeamMinion minion #6;
+		
+
+	aslSourcePath:
+		"src/asl";
+}
