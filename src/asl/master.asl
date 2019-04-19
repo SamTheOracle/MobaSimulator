@@ -26,8 +26,8 @@ minionId(6).
 							 .print("It is blueTeam turn!");
 							 .print("");
 							  turn(blueTeam).
--!swapTurn(blueTeam): true <- .print("Blue team minions all died!");!spawn.
--!swapTurn(redTeam): true <- .print("Red team minions all died");!spawn.
+-!swapTurn(blueTeam): true <- .print("Blue team minions all died!");!spawn(blueTeam).
+-!swapTurn(redTeam): true <- .print("Red team minions all died");!spawn(redTeam).
 /* Plans */
 
 +!start : true <- .print("Getting the game ready").
@@ -36,13 +36,27 @@ minionId(6).
 						?startTurn;.
 						
 
-+?startTurn <- .random(R);if(R < 0.01){
++?startTurn <- .random(R);if(R > 0.01){
 							turn(blueTeam);			
 						}
 						else{
 							turn(redTeam);
 						}.
-+!spawn : minionId(X) <- .wait(5000);MinionId= X+1;-+minionId(X+1);.concat("redTeamMinion",MinionId,MinionNameRed);.create_agent(MinionNameRed,"minion.asl");
++!spawn(blueTeam) : minionId(X) <- .wait(5000);MinionId= X+1;-+minionId(X+1);.concat("redTeamMinion",MinionId,MinionNameRed);
+						.print("CREATING MINION ",MinionNameRed);
+						.create_agent(MinionNameRed,"minion.asl");
 						.concat("blueTeamMinion",MinionId,MinionNameBlue);
+						.print("CREATING MINION ",MinionNameBlue);
 						 .create_agent(MinionNameBlue,"minion.asl");
-						 createMinions(X);.						
+						 createMinions(X);.
+						 //turn(blueTeam).
++!spawn(redTeam) : minionId(X) <- .wait(5000);MinionId= X+1;-+minionId(X+1);.concat("redTeamMinion",MinionId,MinionNameRed);
+						.print("CREATING MINION ",MinionNameRed);
+						.create_agent(MinionNameRed,"minion.asl");
+						.concat("blueTeamMinion",MinionId,MinionNameBlue);
+						.print("CREATING MINION ",MinionNameBlue);
+						 .create_agent(MinionNameBlue,"minion.asl");
+						 createMinions(X);.
+						 //turn(blueTeam).
+						 
+						 					

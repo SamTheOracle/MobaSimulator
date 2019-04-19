@@ -8,4 +8,4 @@
 
 /* Plans */
 
-+!start : true <- .print("hello world.").
++!start : true <- .print("I AM A FUCKING TURRET").

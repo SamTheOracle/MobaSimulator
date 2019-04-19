@@ -4,7 +4,7 @@ public class Champion {
 	
 	private int attackDamage,abilityPower;
 	private String name;
-	private Attack currentAttack;
+	private Attack currentAttack,championAttack;
 	
 	private Ability ability;
 
@@ -16,6 +16,18 @@ public class Champion {
 	}
 	
 	
+
+	public Attack getChampionAttack() {
+		return championAttack;
+	}
+
+
+
+	public void setChampionAttack(Attack championAttack) {
+		this.championAttack = championAttack;
+	}
+
+
 
 	public Ability getAbility() {
 		return ability;
