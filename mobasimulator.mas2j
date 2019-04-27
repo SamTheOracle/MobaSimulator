@@ -5,7 +5,8 @@ MAS mobasimulator {
 	environment: Arena
 
 	agents:
-		nexus;
+		blueTeamNexus nexus;
+		redTeamNexus nexus;
 		blueTeamGaren champion;
 		redTeamRiven champion;
 		gameMaster master;

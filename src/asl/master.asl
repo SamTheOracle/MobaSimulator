@@ -4,7 +4,7 @@
 currentChampionKillRedTeam(0).
 currentChampionKillBlueTeam(0).
 
-minionId(6).
+numberOfMinions(1).
 
 
 
@@ -16,12 +16,12 @@ minionId(6).
 
 
 
-+!swapTurn(redTeam) : true <-//.wait(4000);
++!swapTurn(redTeam) : true <-.wait(3000);
 					 .print("")
 					 .print("It is redTeam turn!");
 					 .print("");
 					 turn(redTeam).
-+!swapTurn(blueTeam) : true <-//.wait(4000);
++!swapTurn(blueTeam) : true <-.wait(3000);
 							 .print("")
 							 .print("It is blueTeam turn!");
 							 .print("");
@@ -42,24 +42,53 @@ minionId(6).
 						else{
 							turn(redTeam);
 						}.
-+!spawn(blueTeam) : minionId(X) <- .wait(5000);MinionId= X+1;-+minionId(X+1);.concat("redTeamMinion",MinionId,MinionNameRed);
-						.print("CREATING MINION ",MinionNameRed);
-						.create_agent(MinionNameRed,"minion.asl");
-						.concat("blueTeamMinion",MinionId,MinionNameBlue);
-						.print("CREATING MINION ",MinionNameBlue);
-						 .create_agent(MinionNameBlue,"minion.asl");
-						 createMinions(X);.
+//+!spawn(blueTeam) : minionId(X) <- MinionId= X+1;-+minionId(X+1);.concat("redTeamMinion",MinionId,MinionNameRed);
+//						.print("CREATING MINION ",MinionNameRed);
+//						.create_agent(MinionNameRed,"minion.asl");
+//						.concat("blueTeamMinion",MinionId,MinionNameBlue);
+//						.print("CREATING MINION ",MinionNameBlue);
+//						 .create_agent(MinionNameBlue,"minion.asl");
+//						 createMinions(X);.
 						 
 						 //turn(blueTeam).
-+!spawn(redTeam) : minionId(X) <- .wait(5000);MinionId= X+1;-+minionId(X+1);.concat("redTeamMinion",MinionId,MinionNameRed);
-						.print("CREATING MINION ",MinionNameRed);
-						.create_agent(MinionNameRed,"minion.asl");
-						.concat("blueTeamMinion",MinionId,MinionNameBlue);
-						.print("CREATING MINION ",MinionNameBlue);
-						 .create_agent(MinionNameBlue,"minion.asl");
-						 createMinions(X);.
-						 //turn(blueTeam).
+//+!spawn(redTeam) : minionId(X) <- MinionId= X+1;-+minionId(X+1);.concat("redTeamMinion",MinionId,MinionNameRed);
+//						.print("CREATING MINION ",MinionNameRed);
+//						.create_agent(MinionNameRed,"minion.asl");
+//						.concat("blueTeamMinion",MinionId,MinionNameBlue);
+//						.print("CREATING MINION ",MinionNameBlue);
+//						 .create_agent(MinionNameBlue,"minion.asl");
+//						 createMinions(X);.
+//						 //turn(blueTeam).
 
++!spawn(blueTeam) <- 
+					while(numberOfMinions(X) & X < 7){
+						 .concat("blueTeamMinion",X,MinionNameBlue);
+						 .create_agent(MinionNameBlue,"minion.asl");
+						 -+numberOfMinions(X+1);
+						 .print("inside loop")
+						 };
+						 -+numberOfMinions(1);
+						 createMinions(blueTeam).
++!spawn(redTeam)  <- 
+					while(numberOfMinions(X) & X < 7){
+						 .concat("redTeamMinion",X,MinionNameRed);
+						 .create_agent(MinionNameRed,"minion.asl");
+						 -+numberOfMinions(X+1);
+						 .print("inside loop")
+						 };
+						 -+numberOfMinions(1);
+						 createMinions(redTeam).
+				  
++!updateChampionKill(redTeam) : currentChampionKillRedTeam(X) 
+							& currentChampionKillBlueTeam(Y)<- -+currentChampionKillBlueTeam(Y + 1);
+																.print("Score is: ", Y + 1, " Blue Team to ", X, " Red Team");
+																//update and respawn champion
+																turn(redTeam).
++!updateChampionKill(blueTeam) : currentChampionKillRedTeam(X) 
+							& currentChampionKillBlueTeam(Y)<- -+currentChampionKillRedTeam(X + 1);
+																.print("Score is: ", X + 1, " Red Team to ", X, " Blue Team");
+																turn(blueTeam).
+																
 
 					 
 						 					

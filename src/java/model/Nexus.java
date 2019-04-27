@@ -2,7 +2,18 @@ package model;
 
 public class Nexus {
 	
-	Attack currentAttack;
+	private Attack currentAttack;
+	private Attack currentChampionAttack;
+	
+	
+
+	public Attack getCurrentChampionAttack() {
+		return currentChampionAttack;
+	}
+
+	public void setCurrentChampionAttack(Attack currentChampionAttack) {
+		this.currentChampionAttack = currentChampionAttack;
+	}
 
 	public Attack getCurrentAttack() {
 		return currentAttack;
@@ -13,7 +24,7 @@ public class Nexus {
 	}
 	@Override
 	public String toString() {
-		return "Nexus";
+		return "Nexus"; 
 	}
 	
 

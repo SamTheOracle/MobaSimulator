@@ -22,9 +22,9 @@ mana(100).
 
 +!start : true <- .print("hello world.").
 +!fight : true <- ?chooseEnemy;.
-+!attack(redTeam) <- .print("my turn");.random(R);selectTarget(redTeam,0.8).
++!attack(redTeam) <- .print("my turn");.random(R);selectTarget(redTeam,R).
 					 //.send(gameMaster,achieve,swapTurn(redTeam)).
-+!attack(blueTeam) <- .print("my turn");.random(R);selectTarget(blueTeam,0.8).//"selectTarget".send(gameMaster,achieve,swapTurn(blueTeam)).
++!attack(blueTeam) <- .print("my turn");.random(R);selectTarget(blueTeam,R).//"selectTarget".send(gameMaster,achieve,swapTurn(blueTeam)).
 
 +!receiveDamage : team(T) & damageFromEnemy(X,Y) & hitPoints(Z)<-?amIAlive;
 										 -+hitPoints(Z - X);
@@ -37,8 +37,8 @@ mana(100).
 
 //+?tryHitEnemyChampion : mana(X) <- 
 
--?amIAlive :self(X) & team(Y) <- .print("I WAS KILLED");.//updateKill(X,Y);.print("I am killing myself ",X);
-								// .send(gameMaster,achieve,respawnChampion(Y));/*.kill_agent(X);*/.										
+-?amIAlive :self(X) & team(Y) <- .print("I WAS KILLED ", X, " team ", Y);updateKill(X,Y);.print("I am killing myself ",X);
+								  .send(gameMaster,achieve,updateChampionKill(Y));.kill_agent(X);.										
 										//.
 								
 									

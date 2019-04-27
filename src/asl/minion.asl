@@ -2,12 +2,14 @@
 
 /* Initial beliefs and rules */
 
-hitPoints(100).
+
 
 
 /*when I receive "spawn" percept, I execute plan !***    */
 +spawn <- .print("I'm going forward").
-
++role(melee)  <- -+hitPoints(150).
++role(distance) <- -+hitPoints(100).
+					
 +damage(X,Y) : true <- .print("receive damage ",X," from ",Y);!receiveDamage.
 
 
@@ -24,6 +26,9 @@ hitPoints(100).
 										-+hitPoints(Y - X);
 										.print("updating hi points when champion hit");	
 										 .send(gameMaster,achieve,swapTurn(T)).
+//+!receiveDamageFromTurret : damageFromTurret(X,Z) & hitPoints(Y) & team(T) <-
+//																			.print(Z, " just hit me wtf!");
+//																			
 +!receiveDamage : damage(X,Z) & hitPoints(Y) & team(T)<- 
 										.print("Ouch, that hurt!");	
 										?amIAlive;		
@@ -35,6 +40,8 @@ hitPoints(100).
 										}else{
 											.send(redTeamRiven,achieve,attack(T));
 										}.
+//enemy champion is dead
+-!receiveDamage : team(T) <- .print("receive damage failed").send(gameMaster,achieve,swapTurn(T)).
 										
 -?amIAlive :self(X) & team(Y) <- .print("I WAS KILLED");updateKill(X,Y);.print("I am killing myself ",X);
 								 .send(gameMaster,achieve,swapTurn(Y));.kill_agent(X);.										
