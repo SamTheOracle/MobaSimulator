@@ -5,8 +5,7 @@ MAS mobasimulator {
 	environment: Arena
 
 	agents:
-		redTeamTurret turret;
-		blueTeamTurret turret;
+		nexus;
 		blueTeamGaren champion;
 		redTeamRiven champion;
 		gameMaster master;

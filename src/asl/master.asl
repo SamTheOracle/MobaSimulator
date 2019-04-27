@@ -49,6 +49,7 @@ minionId(6).
 						.print("CREATING MINION ",MinionNameBlue);
 						 .create_agent(MinionNameBlue,"minion.asl");
 						 createMinions(X);.
+						 
 						 //turn(blueTeam).
 +!spawn(redTeam) : minionId(X) <- .wait(5000);MinionId= X+1;-+minionId(X+1);.concat("redTeamMinion",MinionId,MinionNameRed);
 						.print("CREATING MINION ",MinionNameRed);
@@ -58,5 +59,7 @@ minionId(6).
 						 .create_agent(MinionNameBlue,"minion.asl");
 						 createMinions(X);.
 						 //turn(blueTeam).
-						 
+
+
+					 
 						 					
