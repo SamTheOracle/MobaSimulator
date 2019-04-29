@@ -2,8 +2,7 @@
 
 /* Initial beliefs and rules */
 hitPoints(200).
-
-mana(100).
+level(1).
 
 
 
@@ -26,11 +25,26 @@ mana(100).
 /* Plans */
 
 
-+!start : true <- .print("hello world.").
-+!fight : true <- ?chooseEnemy;.
-+!attack(redTeam) <- .print("my turn");.random(R);selectTarget(redTeam,0.5).
++!start : true <- .print("Ready to fight!").
++!attack(redTeam) : level(X) <- .print("my turn");.random(R);if(R > 0.5){
+										.print("I will struck you with my powerful ability!")
+										DamageModifier = (50 * X * 10)/100;
+										selectTarget(redTeam, 50 + DamageModifier );
+										}
+										else{
+											.print("I will hit you with my sword!")
+											selectTarget(redTeam,50);
+										}.
 					
-+!attack(blueTeam) <- .print("my turn");.random(R);selectTarget(blueTeam,R).
++!attack(blueTeam) : level(X) <- .print("my turn");.random(R);if(R > 0.5){
+										.print("I will struck you with my powerful ability!")
+										DamageModifier = (50 * X * 10)/100;
+										selectTarget(blueTeam, 50 + DamageModifier );
+										}
+										else{
+											.print("I will hit you with my sword!")
+											selectTarget(blueTeam,50);
+										}.
 
 +!receiveDamage : team(T) & damageFromEnemy(X,Y) & hitPoints(Z)<-?amIAlive;
 										 -+hitPoints(Z - X);
@@ -41,12 +55,18 @@ mana(100).
 										  	.send(gameMaster,achieve,swapTurn(blueTeam));
 										  }.
 
-//+?tryHitEnemyChampion : mana(X) <- 
 
 -?amIAlive :self(X) & team(Y) <- .print("I WAS KILLED ", X, " team ", Y);updateKill(X,Y);.print("I am killing myself ",X);
-								  .send(gameMaster,achieve,updateChampionKill(Y));.kill_agent(X);.										
-										//.
-								
-									
-				   						    
+								  
+								  if(Y == redTeam){
+								  	.send(blueTeamGaren,achieve,levelUp);								  	
+								  }
+								  else{
+								  	.send(redTeamRiven,achieve,levelUp);
+								  }
+								  .kill_agent(X);.										
 +?amIAlive : damageFromEnemy(X,_) & hitPoints(Y) <- Y > X. 
++!levelUp : level(X) & team(Y) <- .print("Enemy champion is dead, leveling up ", X +1);
+								  -+level(X+1).send(gameMaster,achieve,updateChampionKill(Y));.
+								  
+								  

@@ -17,17 +17,17 @@ numberOfMinions(1).
 
 
 +!swapTurn(redTeam) : true <-.wait(2000);
-					 .print("")
-					 .print("It is redTeam turn!");
-					 .print("");
+//					 .print("")
+//					 .print("It is redTeam turn!");
+//					 .print("");
 					 turn(redTeam).
 +!swapTurn(blueTeam) : true <-.wait(2000);
-							 .print("")
-							 .print("It is blueTeam turn!");
-							 .print("");
+//							 .print("")
+//							 .print("It is blueTeam turn!");
+//							 .print("");
 							  turn(blueTeam).
--!swapTurn(blueTeam): true <- .print("Blue team minions all died!");turn(blueTeam).//!spawn(blueTeam).
--!swapTurn(redTeam): true <- .print("Red team minions all died");turn(redTeam).//!spawn(redTeam).
+-!swapTurn(blueTeam): true <- .print("Blue team minions all died!");turn(blueTeam).
+-!swapTurn(redTeam): true <- .print("Red team minions all died");turn(redTeam).
 /* Plans */
 
 +!start : true <- .print("Getting the game ready").
@@ -68,7 +68,6 @@ numberOfMinions(1).
 +!updateChampionKill(redTeam) : currentChampionKillRedTeam(X) 
 							& currentChampionKillBlueTeam(Y)<- -+currentChampionKillBlueTeam(Y + 1);
 																.print("Score is: ", Y + 1, " Blue Team to ", X, " Red Team");
-																//update and respawn champion
 																turn(redTeam).
 +!updateChampionKill(blueTeam) : currentChampionKillRedTeam(X) 
 							& currentChampionKillBlueTeam(Y)<- -+currentChampionKillRedTeam(X + 1);
@@ -76,9 +75,9 @@ numberOfMinions(1).
 																turn(blueTeam).
 																
 +!endGame(redTeam) : currentChampionKillRedTeam(X) 
-							& currentChampionKillBlueTeam(Y) <- .print("Blue Team destroyed Red Team Nexus! ", X, " to ",Y);.wait(20000); .stopMAS.
+							& currentChampionKillBlueTeam(Y) <- .print("Blue Team destroyed Red Team Nexus! ", X, " to ",Y);.wait(2000000); .stopMAS.
 +!endGame(blueTeam) : currentChampionKillRedTeam(X) 
-							& currentChampionKillBlueTeam(Y) <- .print("Red Team destroyed Blue Team Nexus! ", Y, " to ", X);.wait(20000); .stopMAS.
+							& currentChampionKillBlueTeam(Y) <- .print("Red Team destroyed Blue Team Nexus! ", Y, " to ", X);.wait(2000000); .stopMAS.
 																					  
 					 
 						 					

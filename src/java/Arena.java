@@ -45,12 +45,10 @@ public class Arena extends Environment {
 	@Override
 	/* agName nome dell'agente, action l'azione */
 	public boolean executeAction(String agName, Structure action) {
-		// log.info(agName+" "+action.getFunctor());
+	
 
 		if (action.equals(prepareArena)) {
-			// log.info("create arena");
 			this.createArena();
-
 
 			return true;
 
@@ -73,19 +71,12 @@ public class Arena extends Environment {
 
 			Champion thisTurnCurrentChampion = startingTeam == Team.blueTeam ? this.blueTeamChampion
 					: this.redTeamChampion;
-			if (thisTurnCurrentChampion != null) {
-				log.info(thisTurnCurrentChampion.toString() + " is alive");
-			}
-
 			Champion otherTeamChampion = startingTeam == Team.blueTeam ? this.redTeamChampion : this.blueTeamChampion;
-			if (otherTeamChampion != null) {
-				log.info(otherTeamChampion.toString() + " is alive");
-			}
 
 			if (bound > 0) {
 				int index = new Random().nextInt(bound);
 				Minion minionAttacking = minions.get(index);
-				log.info("adding percept ATTACK to " + startingTeam.toString() + minionAttacking.toString());
+		
 				addPercept(startingTeam.toString() + minionAttacking.toString(), Literal.parseLiteral("attack"));
 				return true;
 
@@ -98,17 +89,15 @@ public class Arena extends Environment {
 			else {
 				log.info("no element in current team, " + otherTeam.toString() + " will attack nexus!");
 
-				log.info(otherTeam.toString() + " champion is " + otherTeamChampion.toString());
+	
 				bound = otherMinions.size();
 				if (bound > 0) {
 					int index = new Random().nextInt(bound);
 					Minion minionAttacking = otherMinions.get(index);
-					log.info("adding percept to " + otherTeam.toString() + minionAttacking.toString() + " since "
-							+ startingTeam.toString() + " players all died!");
+
 					addPercept(otherTeam.toString() + minionAttacking.toString(), Literal.parseLiteral("attackNexus"));
 				} else if (otherTeamChampion != null) {
-					log.info("adding percept attack nexus to " + otherTeam.toString() + otherTeamChampion.toString()
-							+ " since " + startingTeam.toString() + " players all died!");
+
 					addPercept(otherTeam.toString() + otherTeamChampion.toString(),
 							Literal.parseLiteral("attackNexus"));
 				}
@@ -170,9 +159,6 @@ public class Arena extends Environment {
 					log.info(agName + " focusing melee first!");
 					int indexMelee = new Random().nextInt(boundMelee);
 					Minion minionReceivingDamage = teamMinionsOnlyMelee.get(indexMelee);
-
-					// int attackDamage = 50;
-					log.info("adding damage to " + enemyTeam.toString() + minionReceivingDamage.toString());
 					addPercept(enemyTeam.toString() + minionReceivingDamage.toString(),
 							Literal.parseLiteral("damage(" + Integer.toString(attackDamage) + "," + agName + ")"));
 					minionReceivingDamage.setCurrentAttack(new Attack(attackDamage, 0, agName));
@@ -184,21 +170,19 @@ public class Arena extends Environment {
 					int indexDistance = new Random().nextInt(boundDistance);
 					Minion minionReceivingDamage = teamMinionsOnlyDistance.get(indexDistance);
 
-					// int attackDamage = 50;
-					log.info("adding damage to " + enemyTeam.toString() + minionReceivingDamage.toString());
+
 					addPercept(enemyTeam.toString() + minionReceivingDamage.toString(),
 							Literal.parseLiteral("damage(" + Integer.toString(attackDamage) + "," + agName + ")"));
 					minionReceivingDamage.setCurrentAttack(new Attack(attackDamage, 0, agName));
 					return true;
 				} else if (enemyChampion != null) {
 					/* melee focus champion or turret */
-					log.info("adding percept damage to " + enemyTeam.toString() + enemyChampion.toString());
+
 					addPercept(enemyTeam.toString() + enemyChampion.toString(),
 							Literal.parseLiteral("damageFromEnemy(" + Integer.toString(50) + "," + agName + ")"));
 					enemyChampion.setCurrentAttack(new Attack(50, 0, agName));
 					return true;
 				} else {
-					log.info(agName + " is attacking nexus!");
 					addPercept(enemyTeam.toString() + enemyNexus.toString(),
 							Literal.parseLiteral("damage(" + attackDamage + "," + agName + ")"));
 					enemyNexus.setCurrentAttack(new Attack(attackDamage, 0, agName));
@@ -214,8 +198,7 @@ public class Arena extends Environment {
 					int index = new Random().nextInt(bound);
 					Minion minionReceivingDamage = enemyTeamMinions.get(index);
 
-					// int attackDamage = 50;
-					log.info("adding damage to " + enemyTeam.toString() + minionReceivingDamage.toString());
+		
 					addPercept(enemyTeam.toString() + minionReceivingDamage.toString(),
 							Literal.parseLiteral("damage(" + Integer.toString(attackDamage) + "," + agName + ")"));
 					minionReceivingDamage.setCurrentAttack(new Attack(attackDamage, 0, agName));
@@ -224,7 +207,7 @@ public class Arena extends Environment {
 
 				else if (enemyChampion != null) {
 
-					log.info("adding percept damage to " + enemyTeam.toString() + enemyChampion.toString());
+
 					addPercept(enemyTeam.toString() + enemyChampion.toString(),
 							Literal.parseLiteral("damageFromEnemy(" + Integer.toString(50) + "," + agName + ")"));
 					enemyChampion.setCurrentAttack(new Attack(50, 0, agName));
@@ -244,12 +227,10 @@ public class Arena extends Environment {
 			this.updatePerceptsForTeamsElements();
 			log.info(agName + " is dead");
 			if (agName.contains("Garen")) {
-				log.info("Garen");
 				this.blueTeamChampion = null;
 				return true;
 			}
 			if (agName.contains("Riven")) {
-				log.info("Riven");
 				this.redTeamChampion = null;
 				return true;
 			}
@@ -276,8 +257,7 @@ public class Arena extends Environment {
 		}
 		if (action.getFunctor().contentEquals(createMinions)) {
 			this.updatePerceptsForTeamsElements();
-//			int number = Integer.parseInt(action.getTerm(0).toString());
-//			this.addNewMinions(number);
+
 			final Team currentTeam = Team.valueOf(action.getTerm(0).toString());
 			log.info("New minions and champion for " + currentTeam.toString());
 
@@ -285,64 +265,42 @@ public class Arena extends Environment {
 			for (int i = 1; i <= numberOfMeleeMinions; i++) {
 
 				Minion minion = new Minion(10, i, Role.MELEE);
-				log.info(currentTeam.toString() + minion.toString());
-				boolean test = removePercept(currentTeam.toString() + minion.toString(),
+				removePercept(currentTeam.toString() + minion.toString(),
 						Literal.parseLiteral("random(" + currentTeam.toString() + ")"));
-				log.info(Boolean.toString(test));
-//				addPercept(currentTeam.toString() + minion.toString(),
-//						Literal.parseLiteral("team(" + currentTeam.toString() + ")"));
-//				addPercept(currentTeam.toString() + minion.toString(),
-//						Literal.parseLiteral("role(" + minion.getRole().toString().toLowerCase() + ")"));
-//				addPercept(currentTeam.toString() + minion.toString(),
-//						Literal.parseLiteral("self(" + currentTeam.toString() + minion.toString() + ")"));
+
 
 				elements.add(minion);
 
 			}
 			int distanceMinionStartingNumber = numberOfMeleeMinions + 1;
 			for (int i = distanceMinionStartingNumber; i <= numberOfMinions; i++) {
-
+				
 				Minion minion = new Minion(20, i, Role.DISTANCE);
-//				
-				log.info(currentTeam.toString() + minion.toString());
-//				addPercept(currentTeam.toString() + minion.toString(),
-//						Literal.parseLiteral("team(" + currentTeam.toString() + ")"));
-				boolean test = removePercept(currentTeam.toString() + minion.toString(),
+				removePercept(currentTeam.toString() + minion.toString(),
 						Literal.parseLiteral("random(" + currentTeam.toString() + ")"));
-				log.info(Boolean.toString(test));
-//				addPercept(currentTeam.toString() + minion.toString(),
-//						Literal.parseLiteral("role(" + minion.getRole().toString().toLowerCase() + ")"));
-//				addPercept(currentTeam.toString() + minion.toString(),
-//						Literal.parseLiteral("self(" + currentTeam.toString() + minion.toString() + ")"));
-
 				elements.add(minion);
 
 			}
 
 			teams.put(currentTeam, elements);
-			log.info("new minions size: " + Integer.toString(teams.get(currentTeam).size()));
 
 			if (currentTeam == Team.redTeam) {
 				this.redTeamChampion = new Champion(40, 0, "Riven");
-				boolean test = removePercept(Team.redTeam.toString() + this.redTeamChampion.toString(),
+				removePercept(Team.redTeam.toString() + this.redTeamChampion.toString(),
 						Literal.parseLiteral("random(" + currentTeam.toString() + ")"));
-				log.info(Boolean.toString(test));
 				addPercept(Team.redTeam.toString() + this.redTeamChampion.toString(),
 						Literal.parseLiteral("team(" + Team.redTeam.toString() + ")"));
 				addPercept(Team.redTeam.toString() + this.redTeamChampion.toString(),
 						Literal.parseLiteral("self(redTeamRiven)"));
 			} else {
 				this.blueTeamChampion = new Champion(40, 0, "Garen");
-				boolean test = removePercept(Team.blueTeam.toString() + this.blueTeamChampion.toString(),
+				removePercept(Team.blueTeam.toString() + this.blueTeamChampion.toString(),
 						Literal.parseLiteral("random(" + currentTeam.toString() + ")"));
-				log.info(Boolean.toString(test));
 				addPercept(Team.blueTeam.toString() + this.blueTeamChampion.toString(),
 						Literal.parseLiteral("team(" + Team.blueTeam.toString() + ")"));
 				addPercept(Team.blueTeam.toString() + this.blueTeamChampion.toString(),
 						Literal.parseLiteral("self(blueTeamGaren)"));
 			}
-
-
 
 			return true;
 		}
@@ -352,30 +310,23 @@ public class Arena extends Environment {
 			log.info(agName + " is choosing target");
 			Team enemyTeam = Team.valueOf(action.getTerm(0).toString());
 			Champion enemyChampion = enemyTeam == Team.redTeam ? this.redTeamChampion : this.blueTeamChampion;
-			Champion currentChampion = enemyTeam == Team.redTeam ? this.blueTeamChampion : this.redTeamChampion;
-			int attackDamage = currentChampion.getAttackDamage();
+			float attackDamageDouble = Float.parseFloat(action.getTerm(1).toString());
+			int attackDamage = Math.round(attackDamageDouble);
 			Nexus enemyNexus = enemyTeam == Team.redTeam ? this.redTeamNexus : this.blueTeamNexus;
-			// double randomChoosing = Double.parseDouble(action.getTerm(1).toString());
 			List<Minion> minions = this.teams.get(enemyTeam);
-			//Team championTeam = Team.getOtherTeam(enemyTeam);
-
-			// this.updatePerceptsForTeamsElements(enemyTeam, championTeam);
-
+	
 			if (!minions.isEmpty()) {
 
 				int bound = minions.size();
 				int index = new Random().nextInt(bound);
 				Minion minionReceivingDamage = minions.get(index);
-				log.info("adding percept damageFromEnemyChampion to " + enemyTeam.toString()
-						+ minionReceivingDamage.toString());
+
 				addPercept(enemyTeam.toString() + minionReceivingDamage.toString(), Literal.parseLiteral(
 						"damageFromEnemyChampion(" + Integer.toString(attackDamage) + "," + agName + ")"));
 				minionReceivingDamage.setAttackFromChampion(new Attack(attackDamage, 0, agName));
 				return true;
 
 			} else if (enemyChampion != null) {
-				log.info("adding percept damage to enemy champion to " + enemyTeam.toString()
-						+ enemyChampion.toString());
 
 				addPercept(enemyTeam.toString() + enemyChampion.toString(),
 						Literal.parseLiteral("damageFromEnemy(" + Integer.toString(50) + "," + agName + ")"));
@@ -389,7 +340,6 @@ public class Arena extends Environment {
 				return true;
 			}
 
-			// log.info("this is champion team " +championTeam);
 
 		}
 		return true;
@@ -400,10 +350,8 @@ public class Arena extends Environment {
 		for (Minion minion : minions) {
 			Attack currentAttack = minion.getCurrentAttack();
 			Attack attackFromChampion = minion.getAttackFromChampion();
-			boolean removeDamage = false;
-			boolean removeDamageFromChampion = false;
 			if (currentAttack != null) {
-				removeDamage = removePercept(Team.redTeam.toString() + minion.toString(), Literal.parseLiteral("damage("
+				removePercept(Team.redTeam.toString() + minion.toString(), Literal.parseLiteral("damage("
 						+ Integer.toString(currentAttack.getAttackDamage()) + "," + currentAttack.getFrom() + ")"));
 			}
 			if (attackFromChampion != null) {
@@ -413,22 +361,12 @@ public class Arena extends Environment {
 										+ "," + attackFromChampion.getFrom() + ")"));
 			}
 
-			if (removeDamage) {
-				log.info("removing damage from " + Team.redTeam.toString() + minion.toString() + " is "
-						+ Boolean.toString(removeDamage));
-			}
-			if (removeDamageFromChampion) {
-				log.info("removing damagefromEnemyChampion from " + Team.redTeam.toString() + minion.toString() + " is "
-						+ Boolean.toString(removeDamage));
-			}
-
+		
 			removePercept(Team.redTeam.toString() + minion.toString(), Literal.parseLiteral("spawn"));
 
-			boolean removeAttack = removePercept(Team.redTeam.toString() + minion.toString(),
+			removePercept(Team.redTeam.toString() + minion.toString(),
 					Literal.parseLiteral("attack"));
-			if (removeAttack)
-				log.info("removing attack from " + Team.redTeam.toString() + minion.toString() + " is "
-						+ Boolean.toString(removeDamageFromChampion));
+			
 			removePercept(Team.redTeam.toString() + minion.toString(), Literal.parseLiteral("attackNexus"));
 			minion.setCurrentAttack(null);
 			minion.setAttackFromChampion(null);
@@ -438,39 +376,26 @@ public class Arena extends Environment {
 		for (Minion otherMinion : otherTeamMinions) {
 			Attack currentAttack = otherMinion.getCurrentAttack();
 			Attack attackFromChampion = otherMinion.getAttackFromChampion();
-			boolean removeDamage = false;
-			boolean removeDamageFromChampion = false;
 			if (currentAttack != null) {
-				removeDamage = removePercept(Team.blueTeam.toString() + otherMinion.toString(),
+				removePercept(Team.blueTeam.toString() + otherMinion.toString(),
 						Literal.parseLiteral("damage(" + Integer.toString(currentAttack.getAttackDamage()) + ","
 								+ currentAttack.getFrom() + ")"));
 			}
 			if (attackFromChampion != null) {
-				log.info("removing damageFromEnemyChampion(" + Integer.toString(attackFromChampion.getAttackDamage())
-						+ "," + attackFromChampion.getFrom() + ") from " + Team.blueTeam.toString()
-						+ otherMinion.toString());
-				removePercept(Team.blueTeam.toString() + otherMinion.toString(),
+								removePercept(Team.blueTeam.toString() + otherMinion.toString(),
 						Literal.parseLiteral(
 								"damageFromEnemyChampion(" + Integer.toString(attackFromChampion.getAttackDamage())
 										+ "," + attackFromChampion.getFrom() + ")"));
 			}
 
-			if (removeDamage) {
-				log.info("removing damage from " + Team.blueTeam.toString() + otherMinion.toString() + " is "
-						+ Boolean.toString(removeDamage));
-			}
-			if (removeDamageFromChampion) {
-				log.info("removing damagefromEnemyChampion from " + Team.blueTeam.toString() + otherMinion.toString()
-						+ " is " + Boolean.toString(removeDamageFromChampion));
-			}
+	
 
 			removePercept(Team.blueTeam.toString() + otherMinion.toString(), Literal.parseLiteral("spawn"));
 
 			boolean removeAttack = removePercept(Team.blueTeam.toString() + otherMinion.toString(),
 					Literal.parseLiteral("attack"));
 			if (removeAttack)
-				log.info("removing attack from " + Team.blueTeam.toString() + otherMinion.toString() + " is "
-						+ Boolean.toString(removeAttack));
+			
 			removePercept(Team.blueTeam.toString() + otherMinion.toString(), Literal.parseLiteral("attackNexus"));
 			otherMinion.setCurrentAttack(null);
 			otherMinion.setAttackFromChampion(null);
@@ -481,32 +406,26 @@ public class Arena extends Environment {
 			removePercept("blueTeamGaren", Literal.parseLiteral("attackNexus"));
 			removePercept("blueTeamGaren", Literal.parseLiteral("commenceAttack"));
 			Attack championBlueAttack = this.blueTeamChampion.getCurrentAttack();
-			boolean removeDamagefromBlueChampion = false;
 			if (championBlueAttack != null) {
-				removeDamagefromBlueChampion = removePercept("blueTeamGaren",
+				removePercept("blueTeamGaren",
 						Literal.parseLiteral("damageFromEnemy(" + Integer.toString(championBlueAttack.getAttackDamage())
 								+ "," + championBlueAttack.getFrom() + ")"));
 				this.blueTeamChampion.setCurrentAttack(null);
 			}
-			if (removeDamagefromBlueChampion) {
-				log.info("remove percept damage from redTeamGaren");
-			}
+		
 		}
 		if (this.redTeamChampion != null) {
 			removePercept("redTeamRiven", Literal.parseLiteral("attackNexus"));
 			removePercept("redTeamRiven", Literal.parseLiteral("commenceAttack"));
 
 			Attack championRedAttack = this.redTeamChampion.getCurrentAttack();
-			boolean removeDamageFromRedChampion = false;
 			if (championRedAttack != null) {
-				removeDamageFromRedChampion = removePercept("redTeamRiven",
+				removePercept("redTeamRiven",
 						Literal.parseLiteral("damageFromEnemy(" + Integer.toString(championRedAttack.getAttackDamage())
 								+ "," + championRedAttack.getFrom() + ")"));
 				this.redTeamChampion.setCurrentAttack(null);
 			}
-			if (removeDamageFromRedChampion) {
-				log.info("remove percept damage from redTeamRiven");
-			}
+			
 		}
 
 		/* remove percept from nexus */
@@ -519,8 +438,9 @@ public class Arena extends Environment {
 		Attack blueTeamNexusChampionAttack = this.blueTeamNexus.getCurrentChampionAttack();
 		if (blueTeamNexusChampionAttack != null) {
 			removePercept("blueTeamNexus",
-					Literal.parseLiteral("damageFromChampion(" + Integer.toString(blueTeamNexusChampionAttack.getAttackDamage()) + ","
-							+ blueTeamNexusChampionAttack.getFrom() + ")"));
+					Literal.parseLiteral(
+							"damageFromChampion(" + Integer.toString(blueTeamNexusChampionAttack.getAttackDamage())
+									+ "," + blueTeamNexusChampionAttack.getFrom() + ")"));
 		}
 		Attack redTeamNexusAttack = this.redTeamNexus.getCurrentAttack();
 		if (redTeamNexusAttack != null) {
@@ -531,14 +451,14 @@ public class Arena extends Environment {
 		Attack redTeamNexusAttackChampionAttack = this.redTeamNexus.getCurrentChampionAttack();
 		if (redTeamNexusAttackChampionAttack != null) {
 			removePercept("redTeamNexus",
-					Literal.parseLiteral("damageFromChampion(" + Integer.toString(redTeamNexusAttackChampionAttack.getAttackDamage()) + ","
-							+ redTeamNexusAttackChampionAttack.getFrom() + ")"));
+					Literal.parseLiteral(
+							"damageFromChampion(" + Integer.toString(redTeamNexusAttackChampionAttack.getAttackDamage())
+									+ "," + redTeamNexusAttackChampionAttack.getFrom() + ")"));
 		}
 		this.blueTeamNexus.setCurrentAttack(null);
 		this.blueTeamNexus.setCurrentChampionAttack(null);
 		this.redTeamNexus.setCurrentAttack(null);
 		this.redTeamNexus.setCurrentChampionAttack(null);
-		
 
 	}
 
@@ -550,7 +470,6 @@ public class Arena extends Environment {
 			for (int i = 1; i <= numberOfMeleeMinions; i++) {
 
 				Minion minion = new Minion(25, i, Role.MELEE);
-				log.info(t.toString() + minion.toString());
 				addPercept(t.toString() + minion.toString(), Literal.parseLiteral("team(" + t.toString() + ")"));
 				addPercept(t.toString() + minion.toString(),
 						Literal.parseLiteral("role(" + minion.getRole().toString().toLowerCase() + ")"));
@@ -564,7 +483,6 @@ public class Arena extends Environment {
 			for (int i = distanceMinionStartingNumber; i <= numberOfMinions; i++) {
 
 				Minion minion = new Minion(50, i, Role.DISTANCE);
-				log.info(t.toString() + minion.toString());
 				addPercept(t.toString() + minion.toString(), Literal.parseLiteral("team(" + t.toString() + ")"));
 				addPercept(t.toString() + minion.toString(),
 						Literal.parseLiteral("role(" + minion.getRole().toString().toLowerCase() + ")"));
@@ -596,8 +514,7 @@ public class Arena extends Environment {
 		this.redTeamNexus = new Nexus();
 		addPercept(Team.redTeam.toString() + this.redTeamNexus.toString(),
 				Literal.parseLiteral("team(" + Team.redTeam.toString() + ")"));
-		addPercept(Team.redTeam.toString() + this.redTeamNexus.toString(),
-				Literal.parseLiteral("self(redTeamNexus)"));
+		addPercept(Team.redTeam.toString() + this.redTeamNexus.toString(), Literal.parseLiteral("self(redTeamNexus)"));
 	}
 
 	/** Called before the end of MAS execution */

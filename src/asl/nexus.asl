@@ -14,8 +14,7 @@ hitPoints(150).
 +!receiveDamage : damage(X,Y) & team(T) & hitPoints(Z)<- .print("received damage from ",Y)
 								 ?amIAlive;
 								-+hitPoints(Z - X);
-								//dopo che il minion ha ricevuto il danno,
-																	//tocca al campione nemico di attaccare
+								
 								if(T == redTeam){
 									.send(blueTeamGaren,achieve,attack(redTeam));
 								}
