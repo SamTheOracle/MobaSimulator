@@ -16,18 +16,18 @@ numberOfMinions(1).
 
 
 
-+!swapTurn(redTeam) : true <-.wait(3000);
++!swapTurn(redTeam) : true <-.wait(2000);
 					 .print("")
 					 .print("It is redTeam turn!");
 					 .print("");
 					 turn(redTeam).
-+!swapTurn(blueTeam) : true <-.wait(3000);
++!swapTurn(blueTeam) : true <-.wait(2000);
 							 .print("")
 							 .print("It is blueTeam turn!");
 							 .print("");
 							  turn(blueTeam).
--!swapTurn(blueTeam): true <- .print("Blue team minions all died!");!spawn(blueTeam).
--!swapTurn(redTeam): true <- .print("Red team minions all died");!spawn(redTeam).
+-!swapTurn(blueTeam): true <- .print("Blue team minions all died!");turn(blueTeam).//!spawn(blueTeam).
+-!swapTurn(redTeam): true <- .print("Red team minions all died");turn(redTeam).//!spawn(redTeam).
 /* Plans */
 
 +!start : true <- .print("Getting the game ready").
@@ -42,42 +42,28 @@ numberOfMinions(1).
 						else{
 							turn(redTeam);
 						}.
-//+!spawn(blueTeam) : minionId(X) <- MinionId= X+1;-+minionId(X+1);.concat("redTeamMinion",MinionId,MinionNameRed);
-//						.print("CREATING MINION ",MinionNameRed);
-//						.create_agent(MinionNameRed,"minion.asl");
-//						.concat("blueTeamMinion",MinionId,MinionNameBlue);
-//						.print("CREATING MINION ",MinionNameBlue);
-//						 .create_agent(MinionNameBlue,"minion.asl");
-//						 createMinions(X);.
-						 
-						 //turn(blueTeam).
-//+!spawn(redTeam) : minionId(X) <- MinionId= X+1;-+minionId(X+1);.concat("redTeamMinion",MinionId,MinionNameRed);
-//						.print("CREATING MINION ",MinionNameRed);
-//						.create_agent(MinionNameRed,"minion.asl");
-//						.concat("blueTeamMinion",MinionId,MinionNameBlue);
-//						.print("CREATING MINION ",MinionNameBlue);
-//						 .create_agent(MinionNameBlue,"minion.asl");
-//						 createMinions(X);.
-//						 //turn(blueTeam).
+
 
 +!spawn(blueTeam) <- 
 					while(numberOfMinions(X) & X < 7){
 						 .concat("blueTeamMinion",X,MinionNameBlue);
 						 .create_agent(MinionNameBlue,"minion.asl");
 						 -+numberOfMinions(X+1);
-						 .print("inside loop")
 						 };
 						 -+numberOfMinions(1);
-						 createMinions(blueTeam).
+						 .create_agent("blueTeamGaren","champion.asl");
+						 createMinions(blueTeam);
+						 turn(blueTeam).
 +!spawn(redTeam)  <- 
 					while(numberOfMinions(X) & X < 7){
 						 .concat("redTeamMinion",X,MinionNameRed);
 						 .create_agent(MinionNameRed,"minion.asl");
 						 -+numberOfMinions(X+1);
-						 .print("inside loop")
 						 };
 						 -+numberOfMinions(1);
-						 createMinions(redTeam).
+						 .create_agent("redTeamRiven","champion.asl");
+						  createMinions(redTeam);
+						 turn(blueTeam).
 				  
 +!updateChampionKill(redTeam) : currentChampionKillRedTeam(X) 
 							& currentChampionKillBlueTeam(Y)<- -+currentChampionKillBlueTeam(Y + 1);
@@ -89,6 +75,10 @@ numberOfMinions(1).
 																.print("Score is: ", X + 1, " Red Team to ", X, " Blue Team");
 																turn(blueTeam).
 																
-
++!endGame(redTeam) : currentChampionKillRedTeam(X) 
+							& currentChampionKillBlueTeam(Y) <- .print("Blue Team destroyed Red Team Nexus! ", X, " to ",Y);.wait(20000); .stopMAS.
++!endGame(blueTeam) : currentChampionKillRedTeam(X) 
+							& currentChampionKillBlueTeam(Y) <- .print("Red Team destroyed Blue Team Nexus! ", Y, " to ", X);.wait(20000); .stopMAS.
+																					  
 					 
 						 					

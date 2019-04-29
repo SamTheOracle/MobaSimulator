@@ -10,21 +10,27 @@ mana(100).
 /* Initial goals */
 !start.
 +damageFromEnemy(X,Y) : true <- .print("Ouch! I was hit by ", Y, " for ",X," damage");!receiveDamage.
-//+damageFromChampion(X,Y) : true
-+commenceAttack : team(X) <- if(X == redTeam){
-						!attack(redTeam)
+
++commenceAttack : team(X) <-.print("Attack!");if(X == redTeam){
+						!attack(blueTeam)
 						}
 						else{
-							!attack(blueTeam)
+							!attack(redTeam)
 							}.
++attackNexus: team(X) <-.print("Attack enemy nexus!");if(X == redTeam){
+						!attack(blueTeam)
+						}
+						else{
+							!attack(redTeam)
+							}.							
 /* Plans */
 
 
 +!start : true <- .print("hello world.").
 +!fight : true <- ?chooseEnemy;.
-+!attack(redTeam) <- .print("my turn");.random(R);selectTarget(redTeam,R).
-					 //.send(gameMaster,achieve,swapTurn(redTeam)).
-+!attack(blueTeam) <- .print("my turn");.random(R);selectTarget(blueTeam,R).//"selectTarget".send(gameMaster,achieve,swapTurn(blueTeam)).
++!attack(redTeam) <- .print("my turn");.random(R);selectTarget(redTeam,0.5).
+					
++!attack(blueTeam) <- .print("my turn");.random(R);selectTarget(blueTeam,R).
 
 +!receiveDamage : team(T) & damageFromEnemy(X,Y) & hitPoints(Z)<-?amIAlive;
 										 -+hitPoints(Z - X);

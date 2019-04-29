@@ -6,7 +6,6 @@
 
 
 /*when I receive "spawn" percept, I execute plan !***    */
-+spawn <- .print("I'm going forward").
 +role(melee)  <- -+hitPoints(150).
 +role(distance) <- -+hitPoints(100).
 					
@@ -14,8 +13,9 @@
 
 
 +damageFromEnemyChampion(X,Y): true <- .print("receive damage ",X," from ",Y);!receiveDamageFromChampion.
-+attackTurretOrChampion : true <- .print("attack!");!fight.
++attackNexus : true <- .print("Attack enemy Nexus");!fight.
 +attack :true<- .print("attack!");!fight.
+//+spawn <- .print("I'm going forward").
 
 +!fight : role(X)<- .print("I'll focus the enemy ", X);selectNextEnemy(X);.
 
