@@ -284,7 +284,7 @@ public class Arena extends Environment {
 			teams.put(currentTeam, elements);
 
 			if (currentTeam == Team.redTeam) {
-				this.redTeamChampion = new Champion(40, 0, "Riven");
+				this.redTeamChampion = new Champion(50, 0, "Riven");
 				removePercept(Team.redTeam.toString() + this.redTeamChampion.toString(),
 						Literal.parseLiteral("random(" + currentTeam.toString() + ")"));
 				addPercept(Team.redTeam.toString() + this.redTeamChampion.toString(),
@@ -292,7 +292,7 @@ public class Arena extends Environment {
 				addPercept(Team.redTeam.toString() + this.redTeamChampion.toString(),
 						Literal.parseLiteral("self(redTeamRiven)"));
 			} else {
-				this.blueTeamChampion = new Champion(40, 0, "Garen");
+				this.blueTeamChampion = new Champion(50, 0, "Garen");
 				removePercept(Team.blueTeam.toString() + this.blueTeamChampion.toString(),
 						Literal.parseLiteral("random(" + currentTeam.toString() + ")"));
 				addPercept(Team.blueTeam.toString() + this.blueTeamChampion.toString(),
