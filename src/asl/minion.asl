@@ -5,7 +5,6 @@
 
 
 
-/*when I receive "spawn" percept, I execute plan !***    */
 +role(melee)  <- -+hitPoints(150).
 +role(distance) <- -+hitPoints(100).
 					
@@ -29,14 +28,11 @@
 										.print("Ouch, that hurt!");	
 										?amIAlive;		
 										-+hitPoints(Y - X);
-										//dopo che il minion ha ricevuto il danno,
-																	//tocca al campione nemico di attaccare
 										if(T == redTeam){
 											.send(blueTeamGaren,achieve,attack(T));
 										}else{
 											.send(redTeamRiven,achieve,attack(T));
 										}.
-//enemy champion is dead
 -!receiveDamage : team(T) <- .send(gameMaster,achieve,swapTurn(T)).
 										
 -?amIAlive :self(X) & team(Y) <- .print("I was killed!");updateKill(X,Y);

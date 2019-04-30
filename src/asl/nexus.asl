@@ -2,7 +2,7 @@
 
 /* Initial beliefs and rules */
 
-hitPoints(150).
+hitPoints(350).
 
 /* Initial goals */
 +damage(X,Y) <- true; !receiveDamage.
@@ -32,3 +32,4 @@ hitPoints(150).
 			 
 -?amIAlive : team(Y) <- .print("I WAS KILLED");.send(gameMaster,achieve,endGame(Y)).											   						    
 +?amIAlive : damage(X,_) & hitPoints(Y) <- Y > X. 
+

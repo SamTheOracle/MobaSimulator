@@ -68,5 +68,5 @@ level(1).
 +?amIAlive : damageFromEnemy(X,_) & hitPoints(Y) <- Y > X. 
 +!levelUp : level(X) & team(Y) <- .print("Enemy champion is dead, leveling up ", X +1);
 								  -+level(X+1).send(gameMaster,achieve,updateChampionKill(Y));.
-								  
+
 								  

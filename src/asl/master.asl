@@ -16,26 +16,28 @@ numberOfMinions(1).
 
 
 
+
+/* Plans */
++!prepareArena: true <- prepareArena
+						?startTurn;.
+						
+
++?startTurn <- .random(R);if(R > 0.5){
+							turn(blueTeam);			
+						}
+						else{
+							turn(redTeam);
+						}.
+
 +!swapTurn(redTeam) : true <-.wait(2000);
 					 turn(redTeam).
 +!swapTurn(blueTeam) : true <-.wait(2000);
 							  turn(blueTeam).
 -!swapTurn(blueTeam): true <- .print("Blue team minions all died!");turn(blueTeam).
 -!swapTurn(redTeam): true <- .print("Red team minions all died");turn(redTeam).
-/* Plans */
 
 +!start : true <- .print("Getting the game ready").
 
-+!prepareArena: true <- prepareArena
-						?startTurn;.
-						
-
-+?startTurn <- .random(R);if(R > 0.01){
-							turn(blueTeam);			
-						}
-						else{
-							turn(redTeam);
-						}.
 
 
 +!spawn(blueTeam) <- 
