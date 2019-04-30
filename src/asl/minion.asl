@@ -15,20 +15,16 @@
 +damageFromEnemyChampion(X,Y): true <- .print("receive damage ",X," from ",Y);!receiveDamageFromChampion.
 +attackNexus : true <- .print("Attack enemy Nexus");!fight.
 +attack :true<- .print("attack!");!fight.
-//+spawn <- .print("I'm going forward").
 
 +!fight : role(X)<- .print("I'll focus the enemy ", X);selectNextEnemy(X);.
 
--!fight : team(Y) <- .print("ciao").
 +!receiveDamageFromChampion : damageFromEnemyChampion(X,Z) & hitPoints(Y) & team(T)<- 
-										.print(Z, " just hit me wtf!");	
+										.print(Z, " just hit me!");	
 										?amIAliveWhenChampionHit;
 										-+hitPoints(Y - X);
-										.print("updating hi points when champion hit");	
 										 .send(gameMaster,achieve,swapTurn(T)).
-//+!receiveDamageFromTurret : damageFromTurret(X,Z) & hitPoints(Y) & team(T) <-
-//																			.print(Z, " just hit me wtf!");
-//																			
+
+																		
 +!receiveDamage : damage(X,Z) & hitPoints(Y) & team(T)<- 
 										.print("Ouch, that hurt!");	
 										?amIAlive;		
@@ -41,11 +37,10 @@
 											.send(redTeamRiven,achieve,attack(T));
 										}.
 //enemy champion is dead
--!receiveDamage : team(T) <- .print("receive damage failed").send(gameMaster,achieve,swapTurn(T)).
+-!receiveDamage : team(T) <- .send(gameMaster,achieve,swapTurn(T)).
 										
--?amIAlive :self(X) & team(Y) <- .print("I WAS KILLED");updateKill(X,Y);.print("I am killing myself ",X);
+-?amIAlive :self(X) & team(Y) <- .print("I was killed!");updateKill(X,Y);
 								 .send(gameMaster,achieve,swapTurn(Y));.kill_agent(X);.										
-										//.
 								
 									
 				   						    

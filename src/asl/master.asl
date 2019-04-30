@@ -17,14 +17,8 @@ numberOfMinions(1).
 
 
 +!swapTurn(redTeam) : true <-.wait(2000);
-//					 .print("")
-//					 .print("It is redTeam turn!");
-//					 .print("");
 					 turn(redTeam).
 +!swapTurn(blueTeam) : true <-.wait(2000);
-//							 .print("")
-//							 .print("It is blueTeam turn!");
-//							 .print("");
 							  turn(blueTeam).
 -!swapTurn(blueTeam): true <- .print("Blue team minions all died!");turn(blueTeam).
 -!swapTurn(redTeam): true <- .print("Red team minions all died");turn(redTeam).

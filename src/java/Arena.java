@@ -56,7 +56,6 @@ public class Arena extends Environment {
 		if (action.getFunctor().contentEquals(turn)) {
 
 			Team startingTeam = Team.valueOf(action.getTerm(0).toString());
-			log.info("STARTING TEAM " + startingTeam.toString());
 
 			Team otherTeam = Team.getOtherTeam(startingTeam);
 			List<Minion> minions = this.teams.get(startingTeam);
