@@ -11,14 +11,13 @@ numberOfMinions(1).
 
 
 /* Initial goals */
-!start.
-!prepareArena.
+!startGame.
 
 
 
 
 /* Plans */
-+!prepareArena: true <- prepareArena
++!startGame: true <- prepareArena
 						?startTurn;.
 						
 
