@@ -13,8 +13,7 @@ hitPoints(350).
 +!start : true <- .print("hello world.").
 +!receiveDamage : damage(X,Y) & team(T) & hitPoints(Z)<- .print("received damage from ",Y)
 								 ?amIAlive;
-								-+hitPoints(Z - X);
-								
+								-+hitPoints(Z - X);						
 								if(T == redTeam){
 									.send(blueTeamGaren,achieve,attack(redTeam));
 								}
